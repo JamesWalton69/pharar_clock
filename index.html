@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prahari Clock - The Traditional Bengali Timekeeper</title>
+    <meta name="description" content="A dynamic Prahari Clock that calculates true Vedic/Bengali Prahars based on local sunrise and sunset timings.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Serif+Bengali:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <!-- SunCalc Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
+</head>
+<body>
+    <div class="background-fluid" id="bgFluid"></div>
+    <div class="stars" id="stars"></div>
+
+    <main class="app-container">
+        <header>
+            <h1 class="app-title">পাহারা • PRAHARI</h1>
+            <p class="app-subtitle">The Celestial Bengali Clock</p>
+        </header>
+
+        <div class="clock-layout">
+            <section class="clock-section">
+                <!-- SVG Dual-Dial Clock -->
+                <div class="clock-wrapper">
+                    <svg id="prahari-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="8" result="blur" />
+                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                            </filter>
+                            <filter id="shadow">
+                                <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.3" />
+                            </filter>
+                        </defs>
+                        <!-- Backplate -->
+                        <circle cx="250" cy="250" r="230" class="clock-face-backplate" filter="url(#shadow)" />
+                        
+                        <!-- Prahars Segments (Inner Ring) will be drawn dynamically here -->
+                        <g id="prahar-segments"></g>
+                        
+                        <!-- 24-Hour Numbers (Outer Ring) -->
+                        <g id="hour-markers"></g>
+                        
+                        <!-- Center details -->
+                        <circle cx="250" cy="250" r="110" class="clock-inner-hole" filter="url(#shadow)" />
+                        
+                        <!-- Current Time Readout -->
+                        <text x="250" y="240" class="clock-time-text" id="svg-time">00:00</text>
+                        <text x="250" y="270" class="clock-date-text" id="svg-date">--</text>
+
+                        <!-- Special Markers for Sunrise/Sunset -->
+                        <g id="solar-markers"></g>
+
+                        <!-- Hands -->
+                        <g id="clock-hands">
+                            <line x1="250" y1="250" x2="250" y2="30" class="time-needle" id="time-needle" />
+                            <circle cx="250" cy="250" r="8" class="needle-center" />
+                        </g>
+
+                    </svg>
+                </div>
+            </section>
+
+            <section class="info-section">
+                <div class="glass-card active-prahar-card" id="praharCard">
+                    <div class="card-header">
+                        <span class="pulse-indicator"></span>
+                        <h2 class="card-title">Current Prahar</h2>
+                    </div>
+                    
+                    <div class="prahar-big-title">
+                        <span id="p-bengali">--</span>
+                        <h3 id="p-name">Loading...</h3>
+                    </div>
+
+                    <div class="prahar-type" id="p-type">Diba-Prahar (Day)</div>
+                    
+                    <div class="prahar-timing">
+                        <div class="time-block">
+                            <span class="label">Starts</span>
+                            <span class="value" id="p-start">--:--</span>
+                        </div>
+                        <div class="time-pipe"></div>
+                        <div class="time-block">
+                            <span class="label">Ends</span>
+                            <span class="value" id="p-end">--:--</span>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="p-progress"></div>
+                        </div>
+                        <div class="progress-text" id="p-percentage">0%</div>
+                    </div>
+
+                    <div class="prahar-significance">
+                        <h4>Significance</h4>
+                        <p id="p-significance">Fetching celestial data...</p>
+                    </div>
+                </div>
+
+                <div class="glass-card solar-card">
+                    <div class="solar-event">
+                        <div class="icon sunrise-icon">🌅</div>
+                        <div class="solar-info">
+                            <span class="label">Sunrise</span>
+                            <span class="value" id="info-sunrise">--:--</span>
+                        </div>
+                    </div>
+                    <div class="solar-event">
+                        <div class="icon sunset-icon">🌇</div>
+                        <div class="solar-info">
+                            <span class="label">Sunset</span>
+                            <span class="value" id="info-sunset">--:--</span>
+                        </div>
+                    </div>
+                    <div class="location-status" id="location-status">📍 Using Default Location (Kolkata)</div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="main.js"></script>
+</body>
+</html>
